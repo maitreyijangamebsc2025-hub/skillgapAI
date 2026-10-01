@@ -1,0 +1,6 @@
+{
+  "name": "SkillGap AI",
+  "description": "Identify gaps between university curricula and current job market skill demand using NLP and Gemini AI.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
