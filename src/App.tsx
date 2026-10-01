@@ -278,15 +278,35 @@ export default function App() {
     analyzedSkills: analysisResult.analyzedSkills,
   }), [curriculumText, analysisResult.alignmentScore, activeExtracted, analysisResult.analyzedSkills]);
 
-  const handleSaveSnapshot = (name: string) => {
+  const handleSaveSnapshot = (name: string, branch?: string, commitMessage?: string, baseSnapshotId?: string) => {
+    let sourceText = curriculumText;
+    let sourceSkills = activeExtracted;
+    let sourceScore = analysisResult.alignmentScore;
+    let sourceAnalyzed = analysisResult.analyzedSkills;
+
+    if (baseSnapshotId) {
+      const base = savedSnapshots.find((s) => s.id === baseSnapshotId);
+      if (base) {
+        sourceText = base.curriculumText;
+        sourceSkills = base.extractedSkills;
+        sourceScore = base.alignmentScore;
+        sourceAnalyzed = base.analyzedSkills;
+      }
+    }
+
+    const randomHash = Math.random().toString(16).substring(2, 9);
     const newSnapshot: CurriculumVersionSnapshot = {
       id: `snapshot-${Date.now()}`,
       name,
+      branch: branch || name.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+      commitHash: randomHash,
+      commitMessage: commitMessage || `Update curriculum on ${branch || 'branch'}`,
+      author: 'Faculty Curriculum Lead',
       timestamp: new Date().toLocaleTimeString(),
-      curriculumText,
-      alignmentScore: analysisResult.alignmentScore,
-      extractedSkills: activeExtracted,
-      analyzedSkills: analysisResult.analyzedSkills,
+      curriculumText: sourceText,
+      alignmentScore: sourceScore,
+      extractedSkills: sourceSkills,
+      analyzedSkills: sourceAnalyzed,
     };
     setSavedSnapshots((prev) => [newSnapshot, ...prev]);
   };

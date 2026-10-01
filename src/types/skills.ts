@@ -115,10 +115,14 @@ export interface EvaluationMetrics {
   evaluationNotes: string;
 }
 
-// Curriculum Version Comparison Types
+// Curriculum Version Comparison & Branching Types
 export interface CurriculumVersionSnapshot {
   id: string;
   name: string;
+  branch?: string;
+  commitHash?: string;
+  commitMessage?: string;
+  author?: string;
   timestamp: string;
   curriculumText: string;
   alignmentScore: number;
